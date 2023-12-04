@@ -32,9 +32,22 @@ struct BigNumberText: View {
   }
 }
 
+struct LabelText: View {
+  var text:String
+  
+  var body: some View {
+    Text(text.uppercased())
+      .kerning(1.5)
+      .font(.caption)
+      .bold()
+      .foregroundColor(Color("TextColor"))
+  }
+}
+
 #Preview {
   VStack {
     InstructionText(text: "Instructions go here")
     BigNumberText(number: "69")
+    LabelText(text: "Score")
   }
 }
