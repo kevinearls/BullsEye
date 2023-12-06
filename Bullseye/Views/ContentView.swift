@@ -17,10 +17,20 @@ struct ContentView: View {
       BackgroundView(game: $game)
       VStack {
         InstructionsView(game: $game)
-          .padding(.bottom, 100)
-        HitMeButtonView(alertIsVisible: $alertIsVisible, sliderValue: $sliderValue, game: $game)
+          .padding(.bottom, alertIsVisible ? 0: 100)
+        if alertIsVisible {
+          PointsView(alertIsVisible: $alertIsVisible, game: $game, sliderValue: $sliderValue)
+            .transition(.scale)
+        } else {
+          HitMeButtonView(alertIsVisible: $alertIsVisible, sliderValue: $sliderValue, game: $game)
+            .transition(.scale)
+        }
       }
-      SliderView(sliderValue: $sliderValue)
+      if !alertIsVisible {
+        SliderView(sliderValue: $sliderValue)
+          .zIndex(1)  // Workaround for swiftUI bug.  Not sure we need this
+          .transition(.scale)
+      }
     }
   }
 }
@@ -43,4 +53,5 @@ struct InstructionsView : View {
 #Preview {
   ContentView()
     .preferredColorScheme(.dark)
+    .previewInterfaceOrientation(.landscapeRight)
 }
