@@ -44,10 +44,39 @@ struct LabelText: View {
   }
 }
 
+struct BodyText: View {
+  var text:String
+
+  var body: some View {
+    Text(text)
+      .multilineTextAlignment(.center)
+      .font(.subheadline)
+      .fontWeight(.semibold)
+      .lineSpacing(12)
+  }
+}
+
+struct ButtonText: View {
+  var text:String
+
+  var body: some View {
+    Text(text)
+      .bold()
+      .padding()
+      .frame(maxWidth: .infinity)
+      .background(Color.accentColor)
+      .foregroundColor(.white)
+      .cornerRadius(12)
+  }
+}
+
 #Preview {
   VStack {
     InstructionText(text: "Instructions go here")
     BigNumberText(number: "69")
     LabelText(text: "Score")
+    BodyText(text: "You scored 200 points!\n 😻😻😻 ")
+    ButtonText(text: "Start new round")
   }
+  .padding()
 }

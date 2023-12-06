@@ -42,6 +42,5 @@ struct InstructionsView : View {
 
 #Preview {
   ContentView()
-    .previewDevice("iPhone 12 Mini")
     .preferredColorScheme(.dark)
 }
