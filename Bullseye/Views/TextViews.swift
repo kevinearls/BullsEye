@@ -70,6 +70,18 @@ struct ButtonText: View {
   }
 }
 
+struct BigBoldText: View {
+  let text: String
+
+  var body: some View {
+    Text(text.uppercased())
+      .kerning(2)
+      .foregroundColor(Color("TextColor"))
+      .font(.title)
+      .fontWeight(.black)
+  }
+}
+
 #Preview {
   VStack {
     InstructionText(text: "Instructions go here")
@@ -77,6 +89,7 @@ struct ButtonText: View {
     LabelText(text: "Score")
     BodyText(text: "You scored 200 points!\n 😻😻😻 ")
     ButtonText(text: "Start new round")
+    BigBoldText(text: "Leaderboard")
   }
   .padding()
 }
