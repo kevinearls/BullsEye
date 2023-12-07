@@ -29,8 +29,6 @@ struct DateTextView: View { // TODO move to textViews
       .kerning(-0.2)
       .foregroundColor(Color("TextColor"))
       .font(.title3)
-      //.frame(width: Constants.LeaderBoard.dateColumnWidth)
-
   }
 }
 
@@ -53,17 +51,28 @@ struct RoundedTextView: View {  // TODO: move to RoundedViews
 }
 
 struct HeaderView: View {
+  @Binding var leaderBoardIsShowing: Bool
+  @Environment(\.verticalSizeClass) var verticalSizeClass
+  @Environment(\.horizontalSizeClass) var horizontalSizeClass
+
   var body: some View {
     ZStack {
-      BigBoldText(text: "LeaderBoard")
+      HStack {
+        BigBoldText(text: "LeaderBoard")
+        if verticalSizeClass == .regular && horizontalSizeClass == .compact {
+          Spacer()
+        }
+      }
+
       HStack {
         Spacer()
         Button {
-
+          leaderBoardIsShowing = false
         } label: {
           RoundedImageViewFilled(systemName: "xmark")      }
         }
     }
+    .padding([.horizontal, .top])
   }
 }
 
@@ -109,24 +118,36 @@ struct RowView: View {
 }
 
 struct LeaderBoardView: View {
+  @Binding var leaderBoardIsShowing: Bool
+  @Binding var game: Game
+
   var body : some View {
     ZStack {
       Color("BackgroundColor").ignoresSafeArea()
-      VStack(spacing: 10) {
-        HeaderView()
-        LabelView()
-        RowView(index: 1, score: 42, date: Date())
+      ScrollView {
+        VStack(spacing: 10) {
+          HeaderView(leaderBoardIsShowing: $leaderBoardIsShowing)
+          LabelView()
+          VStack (spacing: 10 ){
+            ForEach(game.leaderBoardEntries.indices, id: \.self) { index in
+              let leaderBoardEntry = game.leaderBoardEntries[index]
+              RowView(index: index + 1, score: leaderBoardEntry.score, date: leaderBoardEntry.date)
+            }
+          }
+        }
       }
     }
   }
 }
 
 #Preview {
-  LeaderBoardView()
+
+  LeaderBoardView(leaderBoardIsShowing: .constant(false), game: .constant(Game(loadTestData: true)))
     .previewInterfaceOrientation(.landscapeRight)
 }
 
-#Preview {
-  LeaderBoardView()
-    .preferredColorScheme(/*@START_MENU_TOKEN@*/.dark/*@END_MENU_TOKEN@*/)
-}
+//#Preview {
+//  //var leaderboardIsShowing = Binding.constant(false)
+//  LeaderBoardView(leaderBoardIsShowing: .constant(false), game: .constant(Game()))
+//    .preferredColorScheme(/*@START_MENU_TOKEN@*/.dark/*@END_MENU_TOKEN@*/)
+//}

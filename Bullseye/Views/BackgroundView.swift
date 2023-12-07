@@ -24,10 +24,10 @@ struct BackgroundView: View {
 }
 
 struct TopView: View {
+  @State private var leaderBoardIsShowing = false
   @Binding var game: Game
   var body: some View {
     HStack {
-
       Button {
         game.restart()
       } label: {
@@ -35,7 +35,15 @@ struct TopView: View {
       }
 
       Spacer()
-      RoundedImageViewFilled(systemName: "list.dash")
+      Button {
+        leaderBoardIsShowing = true
+      } label: {
+        RoundedImageViewFilled(systemName: "list.dash")
+      }
+      .sheet(isPresented: $leaderBoardIsShowing) {
+        LeaderBoardView(leaderBoardIsShowing: $leaderBoardIsShowing, game: $game)
+      }
+
     }
   }
 }

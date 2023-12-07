@@ -11,6 +11,18 @@ struct Game {
   var target = Int.random(in: 1...100)
   var score = 0
   var round = 1
+  var leaderBoardEntries: [LeaderBoardEntry] = []
+
+  init(loadTestData: Bool = false) {
+      if loadTestData {
+        addToLeaderBoard(points: 100)
+        addToLeaderBoard(points: 80)
+        addToLeaderBoard(points: 88)
+        addToLeaderBoard(points: 200)
+        addToLeaderBoard(points: 50)
+        addToLeaderBoard(points: 20)
+      }
+    }
 
   mutating func restart() {
     target = Int.random(in: 1...100)
@@ -29,9 +41,24 @@ struct Game {
     return pointsScored
   }
 
+  mutating func addToLeaderBoard(points: Int) {
+    leaderBoardEntries.append(LeaderBoardEntry(score: points, date: Date()))
+
+    leaderBoardEntries.sort { entry1, entry2 in
+      entry1.score > entry2.score
+    }
+  }
+
   mutating func startNewRound(points: Int) {
+    addToLeaderBoard(points: points)
     score += points
     round += 1
     target = Int.random(in: 1...100)
   }
+}
+
+
+struct LeaderBoardEntry {
+  let score: Int
+  let date: Date
 }
